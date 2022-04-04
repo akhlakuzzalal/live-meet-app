@@ -9,6 +9,7 @@ const useControl = () => {
   const [call, setCall] = useState(false);
   const [callAccepted, setCallAccepted] = useState(false);
   const [me, setMe] = useState('');
+  const [name, setName] = useState('');
   const myVideo = useRef();
   const userVideo = useRef();
   const connectionRef = useRef();
@@ -27,7 +28,28 @@ const useControl = () => {
     });
   }, []);
   // accept the Call
-  const makeCall = () => {};
+  const callUser = (id) => {
+    const peer = new Peer({ initiator: true, trickle: false, stream });
+
+    peer.on('signal', (data) => {
+      socket.emit('callUser', {
+        userToCall: id,
+        name,
+        from: me,
+        signalData: data,
+      });
+    });
+
+    peer.on('stream', (currentStream) => {
+      userVideo.current.srcObject(currentStream);
+    });
+
+    socket.on('callAccepted', (signal) => {
+      setCallAccepted(true);
+      peer.signal(signal);
+    });
+    connectionRef.current = peer;
+  };
   // accept Call
   const acceptCall = () => {
     setCallAccepted(true);
@@ -46,14 +68,25 @@ const useControl = () => {
 
     connectionRef.current = peer;
   };
+  // call end
+  const endCall = () => {
+    setCallEnd(true);
+    connectionRef.current.destroy();
+  };
   return {
-    callEnd,
     setCallEnd,
-    makeCall,
+    callUser,
     acceptCall,
+    endCall,
     stream,
-    myVideo,
+    callEnd,
+    call,
+    callAccepted,
     me,
+    name,
+    myVideo,
+    userVideo,
+    connectionRef,
   };
 };
 
