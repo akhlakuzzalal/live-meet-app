@@ -1,8 +1,6 @@
-const express = require('express');
-const cors = require('cors');
-const { METHODS } = require('http');
-const app = express();
+const app = require('express')();
 const server = require('http').createServer(app);
+const cors = require('cors');
 
 const io = require('socket.io')(server, {
   cors: {
@@ -12,22 +10,21 @@ const io = require('socket.io')(server, {
 });
 
 app.use(cors());
-const port = process.env.PORT || 5000;
 
-// root api
+const PORT = process.env.PORT || 5000;
+
 app.get('/', (req, res) => {
-  res.send('running the server');
+  res.send('Running');
 });
 
-// socket io implement
 io.on('connection', (socket) => {
   socket.emit('me', socket.id);
 
   socket.on('disconnect', () => {
-    socket.broadcast.emit('callend');
+    socket.broadcast.emit('callEnded');
   });
 
-  socket.on('callUser', ({ userToCall, name, from, signal }) => {
+  socket.on('callUser', ({ userToCall, signalData, from, name }) => {
     io.to(userToCall).emit('callUser', { signal: signalData, from, name });
   });
 
@@ -36,4 +33,4 @@ io.on('connection', (socket) => {
   });
 });
 
-server.listen(port, () => console.log(`server running on ${port}`));
+server.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
