@@ -96,8 +96,15 @@ const ControlCall = () => {
       )}
       {call.isReceivingCall && !callAccepted && (
         <div>
-          <h1>{call.name} is calling:</h1>
-          <button onClick={answerCall}>Answer</button>
+          <h1 className="text-base font-bold text-green-400 animate-pulse">
+            {call.name} is calling:
+          </h1>
+          <button
+            className="px-4 py-2 rounded-lg bg-green-600 text-white"
+            onClick={answerCall}
+          >
+            Answer
+          </button>
         </div>
       )}
     </div>
