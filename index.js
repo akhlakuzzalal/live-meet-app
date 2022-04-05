@@ -10,6 +10,7 @@ const io = require('socket.io')(server, {
 });
 
 app.use(cors());
+app.use(express.static(path.join(__dirname, '/build')));
 
 const PORT = process.env.PORT || 5000;
 
