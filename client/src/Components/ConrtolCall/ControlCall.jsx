@@ -3,10 +3,11 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { SocketContext } from '../../Context/ControlContext';
 
 const ControlCall = () => {
-  const [callMood, setCallMood] = useState('');
   const {
     me,
     callAccepted,
+    callMood,
+    setCallMood,
     name,
     setName,
     callEnd,
@@ -88,14 +89,14 @@ const ControlCall = () => {
       )}
       {callAccepted && !callEnd && (
         <button
-          className="px-4 py-2 rounded-lg bg-red-600 text-white mt-6"
+          className="px-4 py-2 rounded-lg bg-red-600 text-white md:mt-6 absolute bottom-0 md:sticky "
           onClick={leaveCall}
         >
           Hang Up
         </button>
       )}
       {call.isReceivingCall && !callAccepted && (
-        <div>
+        <div className="absolute md:static w-full mx-auto my-auto">
           <h1 className="text-base font-bold text-green-400 animate-pulse">
             {call.name} is calling:
           </h1>

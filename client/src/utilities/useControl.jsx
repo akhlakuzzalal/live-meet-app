@@ -9,6 +9,7 @@ const useControl = () => {
   const [callEnded, setCallEnded] = useState(false);
   const [stream, setStream] = useState();
   const [name, setName] = useState('');
+  const [callMood, setCallMood] = useState('');
   const [call, setCall] = useState({});
   const [me, setMe] = useState('');
 
@@ -21,7 +22,6 @@ const useControl = () => {
       .getUserMedia({ video: true, audio: true })
       .then((currentStream) => {
         setStream(currentStream);
-
         myVideo.current.srcObject = currentStream;
       });
 
@@ -93,6 +93,8 @@ const useControl = () => {
     name,
     setName,
     callEnded,
+    callMood,
+    setCallMood,
     me,
     callUser,
     leaveCall,
